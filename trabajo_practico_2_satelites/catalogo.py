@@ -2,12 +2,11 @@ import json
 from funciones_bases import obtener_posicion
 from satelites import Satelite
 
-def leer_json():
-    with open("trabajo_practico_2_satelites/datos/satelites.json", "r", encoding="utf-8") as archivo:
+def leer_json(arc_json):
+    with open(arc_json, "r", encoding="utf-8") as archivo:
         return json.load(archivo)
 
 def crear_catalogo(registros):
-
     lista_satelites = []
     for reg in registros:
         try:
@@ -20,12 +19,12 @@ def crear_catalogo(registros):
             continue 
     return lista_satelites
 
-def resumir_satelites(satelites):
+def resumen_por_orbita(satelites):
     sumas_altitud = {}
     resumen = {}
 
     for s in satelites:
-        tipo = s.obtener_tipo_orbita()
+        tipo = s.t_orbita()
         alt = s.altitud
 
         if tipo not in resumen:
@@ -40,10 +39,9 @@ def resumir_satelites(satelites):
         if alt > resumen[tipo]["maximo"]:
             resumen[tipo]["maximo"] = alt
 
-    for tipo in resumen:
-        cantidad = resumen[tipo]["cantidad"]
-        resumen[tipo]["promedio"] = sumas_altitud[tipo] / cantidad, 2
-
+    for tip in resumen:
+        cantidad = resumen[tip]["cantidad"]
+        resumen[tip]["promedio"] = sumas_altitud[tip] / cantidad
     return resumen
 
 def obtener_satelites_en_zona(satelites, lon_min, lat_min, lon_max, lat_max):
